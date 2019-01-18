@@ -5,6 +5,7 @@ import java.net.*;
 
 public class Server {
 	
+	/*
 	int port ;
 	ServerSocket server ;
 	
@@ -19,48 +20,48 @@ public class Server {
 			System.out.println("IOException in Server()");
 		}
 	}
+	*/
 	
-	public void main() {
+	public static void main(String args[]) throws IOException {
 		while (true) {
 			// Le serveur est en attente de connexion
 			
+			ServerSocket server;
 			Socket client;
-			try {
-				client = server.accept();
+			server = new ServerSocket(1234);
+			client = server.accept();
 				
-				// Un client est connecté
+			// Un client est connecté
+			
+			System.out.println("Client" + client.getInetAddress() + "connected.");
 				
-				System.out.println("Client" + client.getInetAddress() + "connected.");
-				
-				InputStream is = client.getInputStream();
-				DataInputStream dis = new DataInputStream(is);
-				OutputStream os = client.getOutputStream();
-				DataOutputStream dos = new DataOutputStream(os);
-				
-				// Réception du nom du client
-				int length_in = dis.readInt();
-				byte[] b_in = new byte[length_in];
-				int nread = 0;
-				int num = 0;
-				while (nread < length_in) {
-					num = dis.read(b_in, nread, length_in-nread);
-					if (num == -1) {
-						return;
-					}
+			InputStream is = client.getInputStream();
+			DataInputStream dis = new DataInputStream(is);
+			OutputStream os = client.getOutputStream();
+			DataOutputStream dos = new DataOutputStream(os);
+			
+			// Réception du nom du client
+			int length_in = dis.readInt();
+			byte[] b_in = new byte[length_in];
+			int nread = 0;
+			int num = 0;
+			while (nread < length_in) {
+				num = dis.read(b_in, nread, length_in-nread);
+				if (num == -1) {
+					return;
 				}
-				String client_name = new String(b_in);
-				System.out.println("Client said: " + client_name);
-				
-				// Emission du message "Hello <client_name>"
-				String message = "Hello" + client_name ;
-				byte[] b_out = message.getBytes();
-				dos.writeInt(b_out.length);
-				os.write(b_out);
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.out.println("IOException in main()");
+				nread += num;
 			}
+			String client_name = new String(b_in);
+			System.out.println("Client said: " + client_name);
+				
+			// Emission du message "Hello <client_name>"
+			String message = "Hello" + client_name ;
+			byte[] b_out = message.getBytes();
+			dos.writeInt(b_out.length);
+			dos.write(b_out);
+			client.close();
+			server.close();
 			
 			
 		}
