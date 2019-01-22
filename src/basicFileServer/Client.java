@@ -4,12 +4,14 @@ import java.io.*;
 import java.net.*;
 
 public class Client {
+	
+	static String folder = "/home/victor/Bureau/Applications réparties/ClientFiles/";
+	static String host = "127.0.0.1";
+	static int port = 1234;
 
 	public static void main(String args[]) {
 		System.out.println("PROGRAMME CLIENT");
 		
-		String serverHost = "127.0.0.1";
-		int serverPort = 1234;
 		Socket server;
 		
 		InputStream is;
@@ -20,8 +22,17 @@ public class Client {
 		DataOutputStream dos;
 		
 		try {
-			server = new Socket(serverHost, serverPort);
+			server = new Socket(host, port);
 			System.out.println("Connected to " + server.getInetAddress());
+			
+			// Saisie de la requête
+			
+			
+			// Emission de la requête
+			
+			
+			// Réception de la réponse à la requête
+			
 			
 			// Emission du nom de la machine
 			os = server.getOutputStream();

@@ -4,6 +4,9 @@ import java.io.*;
 import java.net.*;
 
 public class Server {
+	
+	static int port = 1234 ;
+	static String folder = "/home/victor/Bureau/Applications réparties/ServerFiles/";
 
 	public static void main(String args[]) throws IOException {
 		System.out.println("PROGRAMME SERVEUR");
@@ -13,7 +16,7 @@ public class Server {
 			
 			ServerSocket server;
 			Socket client;
-			server = new ServerSocket(1234);
+			server = new ServerSocket(port);
 			client = server.accept();
 			
 			// Un client est connecté
@@ -25,7 +28,7 @@ public class Server {
 			OutputStream os = client.getOutputStream();
 			DataOutputStream dos = new DataOutputStream(os);
 			
-			// Réception du nom du client
+			// Réception de la requête du client
 			int length_in = dis.readInt();
 			byte[] b_in = new byte[length_in];
 			int nread = 0;
@@ -37,15 +40,29 @@ public class Server {
 				}
 				nread += num;
 			}
-			String client_name = new String(b_in);
-			System.out.println("Client said: " + client_name);
+			String request = new String(b_in);
+			System.out.println("Download request: " + request);
 			
-			// Emission du message "Hello <client_name>"
-			String message = "Hello " + client_name ;
-			byte[] b_out = message.getBytes();
-			dos.writeInt(b_out.length);
-			dos.write(b_out);
-			System.out.println("Reply: " + message);
+			// Traitement de la requête
+			File fileRequest = new File(folder + request);
+			
+			if(fileRequest.isFile() && !fileRequest.isDirectory()) {
+				// Le fichier existe dans le répertoire
+				byte[] bOut = new byte[(int) fileRequest.length()];
+				BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileRequest));
+				bis.read(bOut, 0, bOut.length);
+				dos.write(bOut, 0, bOut.length);
+				dos.flush();
+				bis.close();
+			}
+			
+			else {
+				// Le fichier n'existe pas dans le répertoire
+				String ErrorReply = "ERROR: File not found";
+				dos.writeInt(ErrorReply.length());
+				dos.write(ErrorReply.getBytes());
+				System.out.println(ErrorReply);
+			}
 			
 			dis.close();
 			dos.close();
