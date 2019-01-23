@@ -48,6 +48,12 @@ public class Server {
 			
 			if(fileRequest.isFile() && !fileRequest.isDirectory()) {
 				// Le fichier existe dans le répertoire
+				String ErrorCode = "200";
+				dos.writeInt(ErrorCode.length());
+				dos.write(ErrorCode.getBytes());
+				System.out.println("200: File found");
+				System.out.println("Uploading...");
+				
 				byte[] bOut = new byte[(int) fileRequest.length()];
 				BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileRequest));
 				bis.read(bOut, 0, bOut.length);
@@ -58,10 +64,12 @@ public class Server {
 			
 			else {
 				// Le fichier n'existe pas dans le répertoire
-				String ErrorReply = "ERROR: File not found";
-				dos.writeInt(ErrorReply.length());
-				dos.write(ErrorReply.getBytes());
-				System.out.println(ErrorReply);
+				String ErrorCode = "404";
+				os = client.getOutputStream();
+				dos = new DataOutputStream(os);
+				dos.writeInt(ErrorCode.length());
+				dos.write(ErrorCode.getBytes());
+				System.out.println("ERROR 404: File not found");
 			}
 			
 			dis.close();

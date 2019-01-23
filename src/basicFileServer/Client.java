@@ -2,6 +2,7 @@ package basicFileServer;
 
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 
 public class Client {
 	
@@ -16,7 +17,6 @@ public class Client {
 		
 		InputStream is;
 		DataInputStream dis;
-		int lengthIS;
 		
 		OutputStream os;
 		DataOutputStream dos;
@@ -26,44 +26,67 @@ public class Client {
 			System.out.println("Connected to " + server.getInetAddress());
 			
 			// Saisie de la requête
-			
+			Scanner sc = new Scanner(System.in);
+		  System.out.println("Request file? ");
+		  String filename = sc.nextLine();
 			
 			// Emission de la requête
-			
-			
-			// Réception de la réponse à la requête
-			
-			
-			// Emission du nom de la machine
-			os = server.getOutputStream();
+		  os = server.getOutputStream();
 			dos = new DataOutputStream(os);
-			String name = "Cocomo";
-			byte[] bOut = name.getBytes();
-			dos.writeInt(bOut.length);
-			dos.write(bOut);
-			System.out.println("Envoi du nom " + name);
+		  dos.writeInt(filename.length());
+			dos.write(filename.getBytes());
+			System.out.println("File request sent. Waiting for answer...");
 			
-			// Réception du message "Hello <client_name>"
-			is = server.getInputStream();
-			dis = new DataInputStream(is);
-			lengthIS = dis.readInt();
-			byte[] bIn = new byte[lengthIS];
-			
+			// Réception du code-réponse à la requête
+		  is = server.getInputStream();
+		  dis = new DataInputStream(is);
+			int length_in = dis.readInt();
+			byte[] b_in = new byte[length_in];
 			int nread = 0;
 			int num = 0;
-			
-			while(nread < lengthIS) {
-				num = dis.read(bIn, nread, lengthIS);
+			while (nread < length_in) {
+				num = dis.read(b_in, nread, length_in-nread);
 				if (num == -1) {
 					return;
 				}
 				nread += num;
 			}
-			System.out.print("Server said: " + new String(bIn));
+			String reply = new String(b_in);
+			System.out.println(reply.substring(0,3)); // DEBUG
+			System.out.println((reply.substring(0,3) == "404")); // DEBUG
+
+			// Traitement du code de réponse
+			if (reply.substring(0,3) == "404") { // ERREUR : CETTE COMPARAISON NE PASSE JAMAIS
+				System.out.println("ERROR 404: File not found");
+			}
+			else if (reply == "200 ") {
+				System.out.println("200: File found");
+				System.out.println("Downloading...");
+				
+				is = server.getInputStream();
+			  dis = new DataInputStream(is);
+				length_in = dis.readInt();
+				b_in = new byte[length_in];
+				nread = 0;
+				num = 0;
+				while (nread < length_in) {
+					num = dis.read(b_in, nread, length_in-nread);
+					if (num == -1) {
+						return;
+					}
+					nread += num;
+				}
+
+				FileWriter fstream = new FileWriter(filename);
+		    BufferedWriter out = new BufferedWriter(fstream);
+		    out.write(b_in.toString());;
+		    out.close();
+			}
 			
 			server.close();
 			dos.close();
 			dis.close();
+			sc.close();
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
