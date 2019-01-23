@@ -46,20 +46,20 @@ public class Client {
 			int num = 0;
 			while (nread < length_in) {
 				num = dis.read(b_in, nread, length_in-nread);
-				if (num == -1) {
+				if (num < 0) {
 					return;
 				}
 				nread += num;
 			}
 			String reply = new String(b_in);
-			System.out.println(reply.substring(0,3)); // DEBUG
-			System.out.println((reply.substring(0,3) == "404")); // DEBUG
+			//System.out.println(reply.substring(0,3)); // DEBUG
+			//System.out.println(reply.substring(0,3).equals("404")); // DEBUG
 
 			// Traitement du code de réponse
-			if (reply.substring(0,3) == "404") { // ERREUR : CETTE COMPARAISON NE PASSE JAMAIS
+			if (reply.substring(0,3).equals("404")) {
 				System.out.println("ERROR 404: File not found");
 			}
-			else if (reply == "200 ") {
+			else if (reply.equals("200 ")) {
 				System.out.println("200: File found");
 				System.out.println("Downloading...");
 				
