@@ -53,7 +53,7 @@ public class Server {
 				dos.write(ErrorCode.getBytes());
 				System.out.println("200: File found");
 				System.out.println("Uploading...");
-				
+//---------------- JUSQU'ICI CA MARCHE ------------------
 				byte[] bOut = new byte[(int) fileRequest.length()];
 				BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileRequest));
 				bis.read(bOut, 0, bOut.length);

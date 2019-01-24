@@ -52,17 +52,15 @@ public class Client {
 				nread += num;
 			}
 			String reply = new String(b_in);
-			//System.out.println(reply.substring(0,3)); // DEBUG
-			//System.out.println(reply.substring(0,3).equals("404")); // DEBUG
 
 			// Traitement du code de réponse
-			if (reply.substring(0,3).equals("404")) {
+			if (reply.equals("404")) {
 				System.out.println("ERROR 404: File not found");
 			}
-			else if (reply.equals("200 ")) {
+			else if (reply.equals("200")) {
 				System.out.println("200: File found");
 				System.out.println("Downloading...");
-				
+//---------------- JUSQU'ICI CA MARCHE ------------------
 				is = server.getInputStream();
 			  dis = new DataInputStream(is);
 				length_in = dis.readInt();
@@ -76,11 +74,12 @@ public class Client {
 					}
 					nread += num;
 				}
-
-				FileWriter fstream = new FileWriter(filename);
+				// La moitié des lignes ci-dessous ne servent probablement à rien...
+				FileWriter fstream = new FileWriter(folder + filename);
 		    BufferedWriter out = new BufferedWriter(fstream);
 		    out.write(b_in.toString());;
 		    out.close();
+		    fstream.close();
 			}
 			
 			server.close();
