@@ -64,24 +64,28 @@ public class Client {
 				is = server.getInputStream();
 			  dis = new DataInputStream(is);
 				length_in = dis.readInt();
+				System.out.println(length_in);
 				b_in = new byte[length_in];
 				nread = 0;
 				num = 0;
 				while (nread < length_in) {
 					num = dis.read(b_in, nread, length_in-nread);
+					System.out.println("Lecture de "+ num + " octets");
 					if (num == -1) {
+						System.out.println("Erreur de lecture.");
 						return;
 					}
 					nread += num;
 				}
-				// La moitié des lignes ci-dessous ne servent probablement à rien...
+
 				FileWriter fstream = new FileWriter(folder + filename);
 		    BufferedWriter out = new BufferedWriter(fstream);
+		    System.out.println(b_in.toString());
 		    out.write(b_in.toString());;
 		    out.close();
 		    fstream.close();
 			}
-			
+			System.out.println("Closing client...");
 			server.close();
 			dos.close();
 			dis.close();

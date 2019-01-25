@@ -56,8 +56,20 @@ public class Server {
 //---------------- JUSQU'ICI CA MARCHE ------------------
 				byte[] bOut = new byte[(int) fileRequest.length()];
 				BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileRequest));
-				bis.read(bOut, 0, bOut.length);
-				dos.write(bOut, 0, bOut.length);
+        int n = 0;
+        dos.writeInt((int) fileRequest.length());
+        while ((n = bis.read(bOut)) >= 0) {
+        	dos.write(bOut);
+           for (byte bit : bOut) {
+              System.out.print("\t" + bit + "(" + (char) bit + ")");
+           }
+           System.out.println("");
+        }
+        System.out.println("Copie terminée !");	
+//				bis.read(bOut, 0, bOut.length);
+//				dos.writeInt((int) fileRequest.length());
+//				//dos.write(bOut, 0, bOut.length);
+//				dos.write(bOut);
 				dos.flush();
 				bis.close();
 			}
@@ -71,7 +83,7 @@ public class Server {
 				dos.write(ErrorCode.getBytes());
 				System.out.println("ERROR 404: File not found");
 			}
-			
+			System.out.println("Closing server...");
 			dis.close();
 			dos.close();
 			client.close();
