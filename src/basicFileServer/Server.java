@@ -53,23 +53,15 @@ public class Server {
 				dos.write(ErrorCode.getBytes());
 				System.out.println("200: File found");
 				System.out.println("Uploading...");
-//---------------- JUSQU'ICI CA MARCHE ------------------
+
 				byte[] bOut = new byte[(int) fileRequest.length()];
 				BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileRequest));
         int n = 0;
         dos.writeInt((int) fileRequest.length());
         while ((n = bis.read(bOut)) >= 0) {
         	dos.write(bOut);
-           for (byte bit : bOut) {
-              System.out.print("\t" + bit + "(" + (char) bit + ")");
-           }
-           System.out.println("");
         }
-        System.out.println("Copie terminée !");	
-//				bis.read(bOut, 0, bOut.length);
-//				dos.writeInt((int) fileRequest.length());
-//				//dos.write(bOut, 0, bOut.length);
-//				dos.write(bOut);
+        System.out.println("Upload succesfull!");
 				dos.flush();
 				bis.close();
 			}
@@ -83,11 +75,12 @@ public class Server {
 				dos.write(ErrorCode.getBytes());
 				System.out.println("ERROR 404: File not found");
 			}
-			System.out.println("Closing server...");
+			
 			dis.close();
 			dos.close();
 			client.close();
 			server.close();
+			System.out.println("Client " + client.getInetAddress() + " disconnected.");
 		}
 	}
 
