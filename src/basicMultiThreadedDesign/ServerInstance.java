@@ -1,26 +1,22 @@
-package basicFileServer;
+package basicMultiThreadedDesign;
 
 import java.io.*;
 import java.net.*;
 
-public class Server {
+public class ServerInstance extends Thread {
 	
-	static int port = 1234 ;
-	static String folder = "/home/victor/Bureau/Applications réparties/ServerFiles/";
+	int port;
+	String folder;
+	Socket client;
+	
+	ServerInstance(int port, String folder, Socket client){
+		this.port = port;
+		this.folder = folder;
+		this.client = client;
+	}
 
-	public static void main(String args[]) throws IOException {
-		System.out.println("PROGRAMME SERVEUR");
-		
-		while (true) {
-			// Le serveur est en attente de connexion
-			
-			ServerSocket server;
-			Socket client;
-			server = new ServerSocket(port);
-			client = server.accept();
-			
-			// Un client est connecté
-			
+	public void run() {
+		try {
 			System.out.println("Client " + client.getInetAddress() + " connected.");
 			
 			InputStream is = client.getInputStream();
@@ -56,11 +52,11 @@ public class Server {
 
 				byte[] bOut = new byte[(int) fileRequest.length()];
 				BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileRequest));
-        dos.writeInt((int) fileRequest.length());
-        while ((bis.read(bOut)) >= 0) {
-        	dos.write(bOut);
-        }
-        System.out.println("Upload succesfull!");
+	      dos.writeInt((int) fileRequest.length());
+	      while ((bis.read(bOut)) >= 0) {
+	      	dos.write(bOut);
+	      }
+	      System.out.println("Upload succesfull!");
 				dos.flush();
 				bis.close();
 			}
@@ -78,9 +74,12 @@ public class Server {
 			dis.close();
 			dos.close();
 			client.close();
-			server.close();
 			System.out.println("Client " + client.getInetAddress() + " disconnected.");
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
-
+	
 }
