@@ -29,6 +29,7 @@ public class Client {
 			Scanner sc = new Scanner(System.in);
 		  System.out.println("Request file? ");
 		  String filename = sc.nextLine();
+		  sc.close();
 			
 			// Emission de la requête
 		  os = server.getOutputStream();
