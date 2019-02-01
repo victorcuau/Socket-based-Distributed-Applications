@@ -57,12 +57,15 @@ public class ServerInstance extends Thread {
 					System.out.println("200: File found");
 					System.out.println("Uploading...");
 	
-					byte[] bOut = new byte[(int) fileRequest.length()];
+					byte[] bOut = new byte[512];
 					BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileRequest));
 		      dos.writeInt((int) fileRequest.length());
 		      System.out.println(fileRequest.length() + " bytes to upload..."); // DEBUG
-		      while ((bis.read(bOut)) >= 0) {
-		      	dos.write(bOut);
+		      nread = 0;
+		      num = 0;
+		      while ((num=bis.read(bOut, nread, Math.min(512, (int)fileRequest.length()-nread))) >= 0) {
+		      	dos.write(bOut,0,num);
+		      	nread+=num;
 		      }
 		      System.out.println("Upload succesfull!");
 					dos.flush();
