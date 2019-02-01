@@ -76,9 +76,9 @@ public class Client {
 					nread += num;
 				}
 
-				FileWriter fstream = new FileWriter(folder + filename);
-		    BufferedWriter out = new BufferedWriter(fstream);
-		    out.write(new String(b_in));;
+				FileOutputStream fstream = new FileOutputStream(new File(folder + filename));
+				BufferedOutputStream out = new BufferedOutputStream(fstream);
+		    out.write(b_in);
 		    out.close();
 		    fstream.close();
 		    System.out.println("Download succesfull!");

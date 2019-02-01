@@ -53,6 +53,7 @@ public class ServerInstance extends Thread {
 				byte[] bOut = new byte[(int) fileRequest.length()];
 				BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileRequest));
 	      dos.writeInt((int) fileRequest.length());
+	      System.out.println(fileRequest.length() + " bytes to upload..."); // DEBUG
 	      while ((bis.read(bOut)) >= 0) {
 	      	dos.write(bOut);
 	      }

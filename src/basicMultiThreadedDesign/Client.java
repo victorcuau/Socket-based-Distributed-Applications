@@ -64,6 +64,7 @@ public class Client {
 				is = server.getInputStream();
 			  dis = new DataInputStream(is);
 				length_in = dis.readInt();
+				System.out.println(length_in + " bytes to download..."); // DEBUG
 				b_in = new byte[length_in];
 				nread = 0;
 				num = 0;
@@ -76,9 +77,9 @@ public class Client {
 					nread += num;
 				}
 
-				FileWriter fstream = new FileWriter(folder + filename);
-		    BufferedWriter out = new BufferedWriter(fstream);
-		    out.write(new String(b_in));;
+				FileOutputStream fstream = new FileOutputStream(new File(folder + filename));
+				BufferedOutputStream out = new BufferedOutputStream(fstream);
+		    out.write(b_in);
 		    out.close();
 		    fstream.close();
 		    System.out.println("Download succesfull!");
