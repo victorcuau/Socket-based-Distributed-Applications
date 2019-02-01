@@ -1,4 +1,4 @@
-package poolBasedMultiThreadedDesign;
+package poolChunkMultiThreadedDesign;
 
 import java.io.*;
 import java.net.*;

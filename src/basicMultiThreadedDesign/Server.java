@@ -20,6 +20,7 @@ public class Server {
 			client = server.accept();
 			// Un client est connecté
 			ServerInstance thread = new ServerInstance(port, folder, client);
+			thread.setDaemon(true);
 			thread.start();
 			
 			server.close();

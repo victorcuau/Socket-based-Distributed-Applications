@@ -8,21 +8,20 @@ public class ServerInstance extends Thread {
 	int id; // Identification unique du thread, pour debug notamment
 	int port;
 	String folder;
-	ServerSocket server;
-	Socket client;
+	ClientBuffer buffer;
 	
-	ServerInstance(int id, int port, String folder, ServerSocket server){
+	ServerInstance(int id, int port, String folder, ClientBuffer buffer){
 		this.id = id;
 		this.port = port;
 		this.folder = folder;
-		this.server = server;
+		this.buffer = buffer;
 	}
 
 	public void run() {
 		while(true) {
 			try {
 				// Le serveur est en attente de connexion
-				client = server.accept();
+				Socket client = buffer.get();
 				System.out.println("Client " + client.getInetAddress() + " connected to thread " + id + ".");
 				// Un client est connecté
 				
@@ -87,6 +86,8 @@ public class ServerInstance extends Thread {
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
