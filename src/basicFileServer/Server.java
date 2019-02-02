@@ -55,14 +55,15 @@ public class Server {
 				System.out.println("Uploading...");
 
 				byte[] bOut = new byte[(int) fileRequest.length()];
-				BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileRequest));
+				FileInputStream fis = new FileInputStream(fileRequest);
         dos.writeInt((int) fileRequest.length());
-        while ((bis.read(bOut)) >= 0) {
+        System.out.println(fileRequest.length() + " bytes to upload...");
+        while ((fis.read(bOut)) >= 0) {
         	dos.write(bOut);
         }
         System.out.println("Upload succesfull!");
 				dos.flush();
-				bis.close();
+				fis.close();
 			}
 			
 			else {

@@ -1,0 +1,4 @@
+Si l'on choisit d'envoyer le fichier octet par octet, on est obligé d'établir un nouveau transfert 
+pour chaque octet.
+En utilisant des chunks de k octets , il est possible d'envoyer jusqu'à k octets d'un seul coup. 
+Sur un réseau, cela évite de multiplier les entêtes inutiles, on améliore le rendement.

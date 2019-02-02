@@ -31,6 +31,8 @@ public class Client {
 		  String filename = sc.nextLine();
 		  sc.close();
 			
+		  long debut = System.currentTimeMillis();
+		  
 			// Emission de la requête
 		  os = server.getOutputStream();
 			dos = new DataOutputStream(os);
@@ -85,6 +87,10 @@ public class Client {
 		    fstream.close();
 		    System.out.println("Download succesfull!");
 			}
+			
+			System.out.print("Download time: ");
+			System.out.print(System.currentTimeMillis()-debut);
+			System.out.println(" ms");
 			
 			server.close();
 			dos.close();

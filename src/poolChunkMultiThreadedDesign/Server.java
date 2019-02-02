@@ -11,7 +11,7 @@ public class Server {
 	
 
 	public static void main(String args[]) throws IOException {
-		System.out.println("PROGRAMME SERVEUR");
+		System.out.println("PROGRAMME SERVEUR (CHUNK)");
 		
 		ClientBuffer buffer = new ClientBuffer(numberThread);
 		

@@ -62,9 +62,15 @@ public class ServerInstance extends Thread {
 					FileInputStream fis = new FileInputStream(fileRequest);
 		      dos.writeInt((int) fileRequest.length());
 		      System.out.println(fileRequest.length() + " bytes to upload...");
-		      while(fis.read(bOut) != -1) {
+		      while(fis.read(bOut) >= 0) {
 		      	dos.write(bOut);
 		      }
+//		      int off = 0;
+//		      int next = 0;
+//		      while((next = fis.read(bOut, off, Math.min(512, (int)fileRequest.length() - off))) >= 0) {
+//		      	dos.write(bOut);
+//		      	off+=next;
+//		      }
 		      System.out.println("Upload succesfull!");
 					dos.flush();
 					fis.close();
@@ -84,6 +90,7 @@ public class ServerInstance extends Thread {
 				dos.close();
 				client.close();
 				System.out.println("Client " + client.getInetAddress() + " disconnected.");
+				
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
