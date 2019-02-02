@@ -6,7 +6,7 @@ import java.net.*;
 public class Server {
 	
 	static int port = 1234 ;
-	static String folder = "/home/victor/Bureau/Applications réparties/ServerFiles/";
+	static String folder = "ServerFiles/";
 
 	public static void main(String args[]) throws IOException {
 		System.out.println("PROGRAMME SERVEUR");

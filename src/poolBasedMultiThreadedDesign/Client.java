@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Client {
 	
-	static String folder = "/home/victor/Bureau/Applications réparties/ClientFiles/";
+	static String folder = "ClientFiles/";
 	static String host = "127.0.0.1";
 	static int port = 1234;
 

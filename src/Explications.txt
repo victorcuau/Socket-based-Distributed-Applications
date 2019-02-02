@@ -2,3 +2,7 @@ Si l'on choisit d'envoyer le fichier octet par octet, on est obligé d'établir 
 pour chaque octet.
 En utilisant des chunks de k octets , il est possible d'envoyer jusqu'à k octets d'un seul coup. 
 Sur un réseau, cela évite de multiplier les entêtes inutiles, on améliore le rendement.
+
+Pour comparer l'efficacité entre les 2 méthodes :
+	- Dans le package poolBasedMultiThreadedDesign lancer Server puis Client
+	- Dans le package poolChunkMultiThreadedDesign lancer Server puis Client

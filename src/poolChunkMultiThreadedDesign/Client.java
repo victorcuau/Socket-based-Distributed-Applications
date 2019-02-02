@@ -6,11 +6,17 @@ import java.util.Scanner;
 
 public class Client {
 	
-	static String folder = "/home/victor/Bureau/Applications réparties/ClientFiles/";
-	static String host = "127.0.0.1";
-	static int port = 1234;
+	String folder;
+	String host;
+	int port;
+	
+	Client(String folder, String host, int port) {
+		this.folder = folder;
+		this.host = host;
+		this.port = port;
+	}
 
-	public static void main(String args[]) {
+	public void start() throws UnknownHostException, IOException{
 		System.out.println("PROGRAMME CLIENT");
 		
 		Socket server;
@@ -21,7 +27,6 @@ public class Client {
 		OutputStream os;
 		DataOutputStream dos;
 		
-		try {
 			server = new Socket(host, port);
 			System.out.println("Connected to " + server.getInetAddress());
 			
@@ -97,13 +102,12 @@ public class Client {
 			dis.close();
 			sc.close();
 			System.out.println("End of connection with " + server.getInetAddress());
-			
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+	}
+	
+	public static void main (String args[]) throws IOException {
+		Client client = new Client("ClientFiles/", 
+															 "127.0.0.1", 1234);
+		client.start();
 	}
 	
 }

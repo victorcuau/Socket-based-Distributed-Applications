@@ -5,17 +5,21 @@ import java.net.*;
 
 public class Server {
 	
-	static int port = 1234 ;
-	static String folder = "/home/victor/Bureau/Applications réparties/ServerFiles/";
-	static int numberThread = 10 ;
+	int port;
+	String folder;
+	int numberThread;
 	
-
-	public static void main(String args[]) throws IOException {
+	Server(int port, String folder, int nbT) {
+		this.port = port ;
+		this.folder = folder ;
+		numberThread = nbT ;
+	}
+	
+	public void start() throws IOException, InterruptedException {
+		
 		System.out.println("PROGRAMME SERVEUR (CHUNK)");
 		
 		ClientBuffer buffer = new ClientBuffer(numberThread);
-		
-		
 		
 		for (int i = 1 ; i<=numberThread ; i++) {
 			ServerInstance thread = new ServerInstance(i, port, folder, buffer);
@@ -23,7 +27,6 @@ public class Server {
 		}
 		
 		while(true) {
-			try {
 				ServerSocket server;
 				server = new ServerSocket(port);
 				
@@ -31,13 +34,13 @@ public class Server {
 				client = server.accept();
 				buffer.put(client);
 				
-				server.close();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
+				server.close();	
 		}
-
+	}
+	
+	public static void main (String args[]) throws IOException, InterruptedException {
+		Server server = new Server(1234, "ServerFiles/", 10);
+		server.start();
 	}
 
 }
