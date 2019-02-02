@@ -5,6 +5,7 @@ import java.net.*;
 
 public class ServerInstance extends Thread {
 	
+	static int chunk = 512; // Taille des chunks
 	int id; // Identification unique du thread, pour debug notamment
 	int port;
 	String folder;
@@ -57,19 +58,16 @@ public class ServerInstance extends Thread {
 					System.out.println("200: File found");
 					System.out.println("Uploading...");
 	
-					byte[] bOut = new byte[512];
-					BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileRequest));
+					byte[] bOut = new byte[chunk];
+					FileInputStream fis = new FileInputStream(fileRequest);
 		      dos.writeInt((int) fileRequest.length());
-		      System.out.println(fileRequest.length() + " bytes to upload..."); // DEBUG
-		      nread = 0;
-		      num = 0;
-		      while ((num=bis.read(bOut, nread, Math.min(512, (int)fileRequest.length()-nread))) >= 0) {
-		      	dos.write(bOut,0,num);
-		      	nread+=num;
+		      System.out.println(fileRequest.length() + " bytes to upload...");
+		      while(fis.read(bOut) != -1) {
+		      	dos.write(bOut);
 		      }
 		      System.out.println("Upload succesfull!");
 					dos.flush();
-					bis.close();
+					fis.close();
 				}
 				
 				else {
